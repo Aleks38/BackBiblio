@@ -1,9 +1,6 @@
 package PROJET.AL.BIBLIO.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -21,5 +18,8 @@ public class Emprunt {
     private int livreId;
     private String dateEmprunt;
     private String dateRetour;
-    private String statut;
+
+    @ManyToOne
+    @JoinColumn(name = "statut_id")
+    private Status status;
 }
