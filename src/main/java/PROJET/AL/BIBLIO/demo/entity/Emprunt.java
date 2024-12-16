@@ -14,7 +14,7 @@ public class Emprunt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int userId;
+    private int utilisateurId;
     private int livreId;
     private String dateEmprunt;
     private String dateRetour;
@@ -22,4 +22,6 @@ public class Emprunt {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
+
+
 }
