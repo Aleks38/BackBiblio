@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BibliothecaireRepository extends JpaRepository<Bibliothecaire, Integer> {
-    Bibliothecaire findByEmail(String email);
 }
