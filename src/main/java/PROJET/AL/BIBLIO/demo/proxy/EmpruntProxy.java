@@ -55,6 +55,7 @@ public class EmpruntProxy {
         borrowModel.setUserSurname(user.getPrenom());
         borrowModel.setLivreId(livreId);
         borrowModel.setLivreTitle(livre.getTitre());
+        borrowModel.setStatus(emprunt.getStatus());
 
         return borrowModel;
     }

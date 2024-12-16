@@ -1,5 +1,6 @@
 package PROJET.AL.BIBLIO.demo.apiModel;
 
+import PROJET.AL.BIBLIO.demo.entity.Status;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +12,6 @@ public class BorrowModel {
     String userSurname;
     int livreId;
     String livreTitle;
+    Status status;
 
 }
