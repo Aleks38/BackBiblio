@@ -1,12 +1,11 @@
 package PROJET.AL.BIBLIO.demo.proxy;
 
-import PROJET.AL.BIBLIO.demo.entity.UserType;
-import org.springframework.stereotype.Service;
-
 import PROJET.AL.BIBLIO.demo.entity.Emprunt;
+import PROJET.AL.BIBLIO.demo.entity.UserType;
 import PROJET.AL.BIBLIO.demo.entity.Utilisateur;
 import PROJET.AL.BIBLIO.demo.repository.EmpruntRepository;
 import PROJET.AL.BIBLIO.demo.repository.UtilisateurRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
@@ -15,12 +14,11 @@ public class EmpruntProxy {
 
     private final EmpruntRepository empruntRepository;
     private final UtilisateurRepository userRepository;
+
     public EmpruntProxy(EmpruntRepository empruntRepository, UtilisateurRepository userRepository) {
         this.empruntRepository = empruntRepository;
         this.userRepository = userRepository;
     }
-
-
 
     public String borrowBook(int userId, int livreId) {
         // Fetch the user's role from the database
@@ -31,16 +29,17 @@ public class EmpruntProxy {
         }
 
         // Check if the user is a "Membre"
-        if (!UserType.MEMBRE.equals(user.getRole().getNom())){
+        if (!UserType.Utilisateur.equals(user.getRole().getNom())) {
             return "Access denied: Only Membres can borrow books.";
         }
 
         // Create and save a new Emprunt
         Emprunt emprunt = new Emprunt();
-        emprunt.setUserId(userId);
+        emprunt.setUtilisateurId(userId);
         emprunt.setLivreId(livreId);
         emprunt.setDateEmprunt(LocalDate.now().toString());
         emprunt.setDateRetour(null);
+        emprunt.setStatus(null);
 
         empruntRepository.save(emprunt);
 
