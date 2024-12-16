@@ -15,5 +15,5 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String nom;
+    private EnumStatus nom;
 }

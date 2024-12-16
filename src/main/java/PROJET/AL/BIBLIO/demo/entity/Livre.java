@@ -15,7 +15,7 @@ import lombok.*;
 public class Livre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String titre;
     private String auteur;

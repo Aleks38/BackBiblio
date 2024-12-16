@@ -1,6 +1,8 @@
 package PROJET.AL.BIBLIO.demo.repository;
 
+import PROJET.AL.BIBLIO.demo.apiModel.BorrowModel;
 import PROJET.AL.BIBLIO.demo.proxy.EmpruntProxy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +17,18 @@ public class EmpruntController {
     }
 
     @PostMapping("/borrow")
-    public String borrowBook(@RequestParam int userId, @RequestParam int livreId) {
-        return empruntProxy.borrowBook(userId, livreId);
+    public ResponseEntity<BorrowModel> borrowBook(@RequestParam int userId, @RequestParam int livreId) {
+        BorrowModel newBorrowModel = empruntProxy.borrowBook(userId, livreId);
+        return ResponseEntity.ok(newBorrowModel);
+    }
+
+    @PostMapping("/accept")
+    public String acceptBorrowRequest(@RequestParam int empruntId) {
+        return empruntProxy.acceptBorrowRequest(empruntId);
+    }
+
+    @PostMapping("/reject")
+    public String rejectBorrowRequest(@RequestParam int empruntId) {
+        return empruntProxy.rejectBorrowRequest(empruntId);
     }
 }
