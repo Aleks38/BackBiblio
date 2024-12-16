@@ -22,4 +22,6 @@ public class Emprunt {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
+
+
 }
