@@ -7,7 +7,7 @@ public class UtilisateurFactory {
                     return new Administrateur(nom, prenom, email, motDePasse, roleEntity);
                 case "bibliothecaire":
                     return new Bibliothecaire(nom, prenom, email, motDePasse, roleEntity);
-                case "membre":
+                case "Utilisateur":
                     return new Membre(nom, prenom, email, motDePasse, roleEntity);
                 default:
                     throw new IllegalArgumentException("Type de role inconnu : " + role);
