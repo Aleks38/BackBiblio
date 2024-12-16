@@ -1,23 +1,18 @@
 package PROJET.AL.BIBLIO.demo;
 
-import PROJET.AL.BIBLIO.demo.entity.Membre;
-import PROJET.AL.BIBLIO.demo.entity.Role;
 import PROJET.AL.BIBLIO.demo.entity.Utilisateur;
 import PROJET.AL.BIBLIO.demo.entity.UtilisateurFactory;
-import PROJET.AL.BIBLIO.demo.repository.MembreRepository;
 import PROJET.AL.BIBLIO.demo.repository.UtilisateurRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class UserRepositoryTest {
 
     @Autowired
-    private MembreRepository membreRepository;
+    private UtilisateurRepository utilisateurRepository;
 
     @Test
     public void testSaveUtilisateurMembre() {
@@ -25,26 +20,13 @@ public class UserRepositoryTest {
                 "membre", "John", "Doe", "john.doe@example.com", "password", null
         );
 
-        Membre savedMembre = membreRepository.save((Membre) membre);
+        Utilisateur savedUtilisateur = utilisateurRepository.save(membre);
 
-        assertNotNull(savedMembre.getId());
-        assertEquals("john.doe@example.com", savedMembre.getEmail());
-        assertEquals("John", savedMembre.getNom());
-        assertEquals("Doe", savedMembre.getPrenom());
+        assertNotNull(savedUtilisateur.getId());
+        assertEquals("john.doe@example.com", savedUtilisateur.getEmail());
+        assertEquals("John", savedUtilisateur.getNom());
+        assertEquals("Doe", savedUtilisateur.getPrenom());
 
-        membreRepository.delete(savedMembre);
+        utilisateurRepository.delete(savedUtilisateur);
     }
-    @Test
-    public void testSaveUtilisateurMembreDirect() {
-        Membre membre = new Membre( "John", "Doe", "john.doe@example.com", "password", null);
-
-        Membre savedMembre = membreRepository.save(membre);
-
-        assertNotNull(savedMembre.getId());
-        assertEquals("john.doe@example.com", savedMembre.getEmail());
-
-        membreRepository.delete(savedMembre);
-    }
-
-
 }
