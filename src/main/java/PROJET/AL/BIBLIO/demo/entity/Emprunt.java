@@ -20,6 +20,6 @@ public class Emprunt {
     private String dateRetour;
 
     @ManyToOne
-    @JoinColumn(name = "statut_id")
+    @JoinColumn(name = "status_id")
     private Status status;
 }
