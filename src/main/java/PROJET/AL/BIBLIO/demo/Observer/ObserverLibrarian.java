@@ -11,7 +11,7 @@ public class ObserverLibrarian implements Observer {
     @Autowired
     private JavaMailSender mailSender;
 
-    private final String librarianEmail = "hammoudimohamedanis@gmail.com"; // Replace with the librarian's email address
+    private final String librarianEmail = "hammoudimohamedani@gmail.com"; // Replace with the librarian's email address
 
     @Override
     public void update(String message) {
