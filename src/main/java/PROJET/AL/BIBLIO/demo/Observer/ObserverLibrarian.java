@@ -8,10 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ObserverLibrarian implements Observer {
 
+    private final String librarianEmail = "hammoudimohamedani@gmail.com"; // Replace with the librarian's email address
     @Autowired
     private JavaMailSender mailSender;
-
-    private final String librarianEmail = "hammoudimohamedanis@gmail.com"; // Replace with the librarian's email address
 
     @Override
     public void update(String message) {
@@ -22,12 +21,12 @@ public class ObserverLibrarian implements Observer {
 
     private void sendEmailNotification() {
         try {
-            SimpleMailMessage messageee = new SimpleMailMessage();
+            SimpleMailMessage message = new SimpleMailMessage();
 
-            messageee.setTo(librarianEmail);
-            messageee.setSubject("New Borrow Request Notification");
-            messageee.setText("Dear Librarian, you have a new borrow request.\n\nThank you.");
-            mailSender.send(messageee);
+            message.setTo(librarianEmail);
+            message.setSubject("New Borrow Request Notification");
+            message.setText("Dear Librarian, you have a new borrow request.\n\nThank you.");
+            mailSender.send(message);
             System.out.println("Email sent to librarian: " + librarianEmail);
         } catch (Exception e) {
             System.err.println("Failed to send email: " + e.getMessage());
