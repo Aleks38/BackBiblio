@@ -2,16 +2,17 @@ package PROJET.AL.BIBLIO.demo.proxy;
 
 import PROJET.AL.BIBLIO.demo.entity.Status;
 import PROJET.AL.BIBLIO.demo.entity.UserType;
+import PROJET.AL.BIBLIO.demo.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import PROJET.AL.BIBLIO.demo.entity.Emprunt;
-import PROJET.AL.BIBLIO.demo.entity.Utilisateur;
 import PROJET.AL.BIBLIO.demo.repository.EmpruntRepository;
 import PROJET.AL.BIBLIO.demo.repository.UtilisateurRepository;
 
 import java.time.LocalDate;
 import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class EmpruntProxy {
@@ -27,37 +28,24 @@ public class EmpruntProxy {
 
 
 
-    public empruntAnswer borrowBook(int userId, int livreId) {
-        // Fetch the user's role from the database
-
-        Optional<Utilisateur> userOptional = Optional.ofNullable(userRepository.findById(userId));
-
-        if (userOptional.isEmpty()) {
-            return new empruntAnswer(null, "Error: User not found.");
-        }
-        Utilisateur user = userOptional.get();
+    public String borrowBook(int userId, int livreId) {
+        Utilisateur userOptional = userRepository.findById(userId).orElse(null);
 
 
-
-        // Check if the user is a "Membre"
-        if (!UserType.Utilisateur.equals(user.getRole().getNom())){
-            return new empruntAnswer(null, "Access denied: Only Membres can borrow books.");
+// Vérifier si l'utilisateur est de type Membre
+        if (!(userOptional instanceof Membre)) {
+            return "Access denied: Only Membres can borrow books.";
         }
 
-        // Create and save a new Emprunt
+// Créer et sauvegarder un nouvel Emprunt
         Emprunt emprunt = new Emprunt();
-
+        emprunt.setUserId(userId);
         emprunt.setLivreId(livreId);
-        emprunt.setUtilisateurId(userId);
         emprunt.setDateEmprunt(LocalDate.now().toString());
-        emprunt.setDateRetour(LocalDate.now().plusDays(15).toString());
-        Status status = new Status();
-        status.setId(1);  // Set the ID to 1 directly
+        emprunt.setDateRetour(null);
 
-        emprunt.setStatus(status);
-        empruntRepository.save(emprunt);
-
-        return new empruntAnswer(emprunt, "emprunt successfully.");
+        empruntRepository.save(emprunt); // Sauvegarde dans le repository
+        return "Emprunt successfully created.";
 
     }
 }
