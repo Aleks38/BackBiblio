@@ -12,5 +12,5 @@ import java.util.Optional;
 @RequestMapping("/utilisateurs")
 @CrossOrigin(origins = "http://localhost:4200")
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> {
-    public Optional<Utilisateur> findById(Long id);
+    Optional<Utilisateur> findById(Long id);
 }

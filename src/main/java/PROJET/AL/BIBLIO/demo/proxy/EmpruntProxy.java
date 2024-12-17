@@ -6,21 +6,20 @@ import PROJET.AL.BIBLIO.demo.repository.EmpruntRepository;
 import PROJET.AL.BIBLIO.demo.repository.LivreRepository;
 import PROJET.AL.BIBLIO.demo.repository.StatusRepository;
 import PROJET.AL.BIBLIO.demo.repository.UtilisateurRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 import java.util.List;
 
 @Service
 public class EmpruntProxy {
-    @Autowired
     private final EmpruntRepository empruntRepository;
-    @Autowired
     private final UtilisateurRepository userRepository;
     private final LivreRepository livreRepository;
     private final StatusRepository statusRepository;
 
+    @Autowired
     public EmpruntProxy(EmpruntRepository empruntRepository, UtilisateurRepository userRepository, LivreRepository livreRepository, StatusRepository statusRepository) {
         this.empruntRepository = empruntRepository;
         this.userRepository = userRepository;
