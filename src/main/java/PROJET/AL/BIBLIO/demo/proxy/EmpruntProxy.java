@@ -17,14 +17,9 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @Service
 public class EmpruntProxy {
     @Autowired
-    private final EmpruntRepository empruntRepository;
+    EmpruntRepository empruntRepository;
     @Autowired
-    private final UtilisateurRepository userRepository;
-
-    public EmpruntProxy(EmpruntRepository empruntRepository, UtilisateurRepository userRepository, UtilisateurRepository utilisateurRepository) {
-        this.empruntRepository = empruntRepository;
-        this.userRepository = userRepository;
-    }
+    UtilisateurRepository userRepository;
 
 
     public EmpruntAnswer borrowBook(int userId, int livreId) {
