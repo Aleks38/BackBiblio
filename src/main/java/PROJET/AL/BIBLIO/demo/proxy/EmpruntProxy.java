@@ -26,13 +26,13 @@ public class EmpruntProxy {
 
 
 
-    public String borrowBook(int userId, int livreId) {
+    public empruntAnswer borrowBook(int userId, int livreId) {
         // Fetch the user's role from the database
 
         Optional<Utilisateur> userOptional = Optional.ofNullable(userRepository.findById(userId));
 
         if (userOptional.isEmpty()) {
-            return "Error: User not found.";
+            return new empruntAnswer(null, "Error: User not found.");
         }
         Utilisateur user = userOptional.get();
 
@@ -40,17 +40,19 @@ public class EmpruntProxy {
 
         // Check if the user is a "Membre"
         if (!UserType.Utilisateur.equals(user.getRole().getNom())){
-            return "Access denied: Only Membres can borrow books.";
+            return new empruntAnswer(null, "Access denied: Only Membres can borrow books.");
         }
 
         // Create and save a new Emprunt
         Emprunt emprunt = new Emprunt();
+        emprunt.setLivreId(livreId);
         emprunt.setUtilisateurId(userId);
         emprunt.setDateEmprunt(LocalDate.now().toString());
         emprunt.setDateRetour(null);
 
         empruntRepository.save(emprunt);
 
-        return "Book " + livreId + " has been borrowed by user " + userId + ".";
+        return new empruntAnswer(emprunt, "emprunt successfully.");
+
     }
 }
