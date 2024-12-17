@@ -2,13 +2,13 @@ package PROJET.AL.BIBLIO.demo.proxy;
 
 import PROJET.AL.BIBLIO.demo.entity.Emprunt;
 
-public class empruntAnswer {
+public class EmpruntAnswer {
     private Emprunt emprunt;
     private String message;
 
-    public empruntAnswer(Emprunt emprunt, String message) {
+     EmpruntAnswer(Emprunt emprunt, String message) {
         this.emprunt = emprunt;
-        this.message = message;
+        this.message=message;
     }
 
     // Getters et setters

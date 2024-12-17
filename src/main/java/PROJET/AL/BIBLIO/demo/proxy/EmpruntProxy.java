@@ -27,25 +27,26 @@ public class EmpruntProxy {
     }
 
 
-
-    public String borrowBook(int userId, int livreId) {
+    public EmpruntAnswer borrowBook(int userId, int livreId) {
         Utilisateur userOptional = userRepository.findById(userId).orElse(null);
 
 
-// Vérifier si l'utilisateur est de type Membre
         if (!(userOptional instanceof Membre)) {
-            return "Access denied: Only Membres can borrow books.";
+            return new EmpruntAnswer(null, "Access denied: Only Membres can borrow books.");
         }
 
-// Créer et sauvegarder un nouvel Emprunt
         Emprunt emprunt = new Emprunt();
-        emprunt.setUserId(userId);
-        emprunt.setLivreId(livreId);
-        emprunt.setDateEmprunt(LocalDate.now().toString());
-        emprunt.setDateRetour(null);
 
-        empruntRepository.save(emprunt); // Sauvegarde dans le repository
-        return "Emprunt successfully created.";
+        emprunt.setLivreId(livreId);
+        emprunt.setUtilisateurId(userId);
+        emprunt.setDateEmprunt(LocalDate.now().toString());
+        emprunt.setDateRetour(LocalDate.now().plusDays(15).toString());
+        Status status = new Status();
+        status.setId(1);  // Set the ID to 1 directly
+        emprunt.setStatus(status);
+        empruntRepository.save(emprunt);
+
+        return new EmpruntAnswer(emprunt, "emprunt successfully.");
 
     }
 }

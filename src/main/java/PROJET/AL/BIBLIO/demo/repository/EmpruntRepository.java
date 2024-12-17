@@ -15,5 +15,4 @@ import java.util.Optional;
 public interface EmpruntRepository extends JpaRepository<Emprunt, Integer> {
     Optional<Emprunt> findById(Integer id);
 
-    List<Emprunt> findByUtilisateurId(Integer utilisateurId);
 }
