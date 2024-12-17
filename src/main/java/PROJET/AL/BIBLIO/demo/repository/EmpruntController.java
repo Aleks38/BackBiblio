@@ -1,21 +1,25 @@
 package PROJET.AL.BIBLIO.demo.repository;
 
 import PROJET.AL.BIBLIO.demo.proxy.EmpruntProxy;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/emprunt")
-@CrossOrigin(origins = "http://localhost:4200")
-public class EmpruntController {
+    public class EmpruntController {
+        @Autowired
+        private final EmpruntProxy empruntProxy;
 
-    private final EmpruntProxy empruntProxy;
+        public EmpruntController(EmpruntProxy empruntProxy) {
+            this.empruntProxy = empruntProxy;
+        }
 
-    public EmpruntController(EmpruntProxy empruntProxy) {
-        this.empruntProxy = empruntProxy;
-    }
+        @PostMapping("/borrow")
+        public String borrowBook(@RequestParam int userId, @RequestParam int livreId) {
+            System.out.println("THIS IS USER'S id" );
 
-    @PostMapping("/borrow")
-    public String borrowBook(@RequestParam int userId, @RequestParam int livreId) {
-        return empruntProxy.borrowBook(userId, livreId);
-    }
-}
+            return empruntProxy.borrowBook(userId, livreId);
+}}
