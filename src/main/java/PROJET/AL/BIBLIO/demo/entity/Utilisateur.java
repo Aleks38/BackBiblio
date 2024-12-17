@@ -9,7 +9,10 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Utilisateur {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,4 +25,6 @@ public class Utilisateur {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    public abstract void afficherDetails();
 }
