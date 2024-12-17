@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ObserverLibrarian implements Observer {
 
-    private final String librarianEmail = "hammoudimohamedani@gmail.com"; // Replace with the librarian's email address
     @Autowired
     private JavaMailSender mailSender;
-    
+
+    private final String librarianEmail = "hammoudimohamedan@gmail.com"; // Replace with the librarian's email address
+
     @Override
     public void update(String message) {
         if (message.contains("New Demande")) {
