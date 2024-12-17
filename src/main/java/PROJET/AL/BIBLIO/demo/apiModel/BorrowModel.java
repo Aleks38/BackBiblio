@@ -7,10 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BorrowModel {
-    int userId;
+    Long userId;
     String userName;
     String userSurname;
-    int livreId;
+    Long livreId;
     String livreTitle;
     Status status;
 

@@ -1,16 +1,15 @@
 package PROJET.AL.BIBLIO.demo.proxy;
 
 import PROJET.AL.BIBLIO.demo.apiModel.BorrowModel;
-import PROJET.AL.BIBLIO.demo.entity.Emprunt;
-import PROJET.AL.BIBLIO.demo.entity.Livre;
-import PROJET.AL.BIBLIO.demo.entity.UserType;
-import PROJET.AL.BIBLIO.demo.entity.Utilisateur;
+import PROJET.AL.BIBLIO.demo.entity.*;
 import PROJET.AL.BIBLIO.demo.repository.EmpruntRepository;
 import PROJET.AL.BIBLIO.demo.repository.LivreRepository;
+import PROJET.AL.BIBLIO.demo.repository.StatusRepository;
 import PROJET.AL.BIBLIO.demo.repository.UtilisateurRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class EmpruntProxy {
@@ -18,17 +17,20 @@ public class EmpruntProxy {
     private final EmpruntRepository empruntRepository;
     private final UtilisateurRepository userRepository;
     private final LivreRepository livreRepository;
+    private final StatusRepository statusRepository;
 
-    public EmpruntProxy(EmpruntRepository empruntRepository, UtilisateurRepository userRepository, LivreRepository livreRepository) {
+    public EmpruntProxy(EmpruntRepository empruntRepository, UtilisateurRepository userRepository, LivreRepository livreRepository, StatusRepository statusRepository) {
         this.empruntRepository = empruntRepository;
         this.userRepository = userRepository;
         this.livreRepository = livreRepository;
+        this.statusRepository = statusRepository;
     }
 
-    public BorrowModel borrowBook(int userId, int livreId) {
+    public BorrowModel borrowBook(Long userId, Long livreId) {
         // Fetch the user's role from the database
-        Utilisateur user = userRepository.findById(userId);
-        Livre livre = livreRepository.findById(livreId);
+        Utilisateur user = userRepository.findById(userId).orElse(null);
+        Livre livre = livreRepository.findById(livreId).orElse(null);
+        Status statusWaiting = statusRepository.findByNom(EnumStatus.Waiting).orElse(null);
 
         if (user == null) {
             throw new RuntimeException("User not found.");
@@ -45,7 +47,7 @@ public class EmpruntProxy {
         emprunt.setLivreId(livreId);
         emprunt.setDateEmprunt(LocalDate.now().toString());
         emprunt.setDateRetour(null);
-        emprunt.setStatus(null);
+        emprunt.setStatus(statusWaiting);
 
         empruntRepository.save(emprunt);
 
@@ -60,45 +62,42 @@ public class EmpruntProxy {
         return borrowModel;
     }
 
-    public String acceptBorrowRequest(int empruntId) {
+    public Emprunt acceptBorrowRequest(Long empruntId) {
         // Fetch the Emprunt from the database
-        Emprunt emprunt = empruntRepository.findById(empruntId);
+        Emprunt emprunt = empruntRepository.findById(empruntId).orElse(null);
+        Status statusAccepted = statusRepository.findByNom(EnumStatus.Accepted).orElse(null);
 
         if (emprunt == null) {
-            return "Error: Emprunt not found.";
+            throw new RuntimeException("Emprunt not found.");
         }
 
         // Check if the Emprunt is pending
-        if (!"pending".equals(emprunt.getStatus())) {
-            return "Error: Emprunt is not pending.";
+        if (statusAccepted.equals(emprunt.getStatus())) {
+            throw new RuntimeException("Emprunt is not pending.");
         }
 
         // Update the Emprunt status to "accepted"
-//        emprunt.setStatus();
+        emprunt.setStatus(statusAccepted);
 
         empruntRepository.save(emprunt);
 
-        return "Borrow request " + empruntId + " has been accepted.";
+        return emprunt;
     }
 
-    public String rejectBorrowRequest(int empruntId) {
-        // Fetch the Emprunt from the database
-        Emprunt emprunt = empruntRepository.findById(empruntId);
+    public Boolean rejectBorrowRequest(Long empruntId) {
+        Emprunt emprunt = empruntRepository.findById(empruntId).orElse(null);
 
         if (emprunt == null) {
-            return "Error: Emprunt not found.";
+            throw new RuntimeException("Emprunt not found.");
         }
 
-        // Check if the Emprunt is pending
-        if (!"pending".equals(emprunt.getStatus())) {
-            return "Error: Emprunt is not pending.";
-        }
+        empruntRepository.delete(emprunt);
 
-        // Update the Emprunt status to "rejected"
-//        emprunt.setStatus(EnumStatus.);
-
-        empruntRepository.save(emprunt);
-
-        return "Borrow request " + empruntId + " has been rejected.";
+        return true;
     }
+
+    public List<Emprunt> getEmpruntsByUserId(Long userId) {
+        return empruntRepository.findByUtilisateurId(userId);
+    }
+
 }
