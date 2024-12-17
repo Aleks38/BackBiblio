@@ -8,34 +8,42 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
-
     @Autowired
-    private UtilisateurRepository utilisateurRepository;
+    UtilisateurRepository utilisateurRepository;
 
-    @PostMapping("/utilisateurs")
-    public ResponseEntity<?> createUtilisateur(
-            @RequestParam String role,
-            @RequestParam String nom,
-            @RequestParam String prenom,
-            @RequestParam String email,
-            @RequestParam String motDePasse
-    ) {
+    @PostMapping("/creatUtilisateurs")
+    public ResponseEntity<Map<String, Object>> createUtilisateur(@RequestBody Map<String, String> requestBody) {
+        Utilisateur utilisateur;
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            // Création de l'utilisateur via la factory
-            Utilisateur utilisateur = UtilisateurFactory.CreateUtilisateur(role, nom, prenom, email, motDePasse);
+            String role = requestBody.get("role");
+            String nom = requestBody.get("nom");
+            String prenom = requestBody.get("prenom");
+            String email = requestBody.get("email");
+            String motDePasse = requestBody.get("motDePasse");
 
-            // Sauvegarde dans la base de données
-            utilisateurRepository.save(utilisateur);
+            utilisateur = UtilisateurFactory.CreateUtilisateur(role, nom, prenom, email, motDePasse);
+            utilisateur = utilisateurRepository.save(utilisateur);
 
-            return ResponseEntity.ok("Utilisateur créé avec succès : " + utilisateur.getNom() + " " + utilisateur.getPrenom());
+            response.put("status", "success");
+            response.put("message", "Utilisateur créé avec succès");
+            response.put("utilisateur", utilisateur);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Erreur : " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Une erreur est survenue.");
+            response.put("status", "error");
+            response.put("message", e.getMessage());
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
 }
