@@ -20,7 +20,5 @@ import org.springframework.web.bind.annotation.RestController;
 
         @PostMapping("/borrow")
         public EmpruntAnswer borrowBook(@RequestParam int userId, @RequestParam int livreId) {
-            System.out.println("THIS IS USER'S id" );
-
             return empruntProxy.borrowBook(userId, livreId);
 }}

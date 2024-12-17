@@ -10,7 +10,7 @@ import lombok.Setter;
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
     private EnumStatus nom;
