@@ -25,7 +25,7 @@ public class EmpruntProxy {
         this.livreRepository = livreRepository;
         this.statusRepository = statusRepository;
     }
-
+/*
     public EmpruntAnswer borrowBook(int userId, int livreId) {
         Utilisateur userOptional = userRepository.findById(userId).orElse(null);
 
@@ -47,7 +47,7 @@ public class EmpruntProxy {
 
         return new EmpruntAnswer(emprunt, "emprunt successfully.");
 
-    }
+    }*/
     public Emprunt acceptBorrowRequest(Integer empruntId) {
         // Fetch the Emprunt from the database
         Emprunt emprunt = empruntRepository.findById(empruntId).orElse(null);

@@ -1,5 +1,6 @@
 package PROJET.AL.BIBLIO.demo.repository;
 
+import PROJET.AL.BIBLIO.demo.proxy.BorrowBookProxy;
 import PROJET.AL.BIBLIO.demo.proxy.EmpruntProxy;
 import PROJET.AL.BIBLIO.demo.proxy.EmpruntAnswer;
 import PROJET.AL.BIBLIO.demo.entity.Emprunt;
@@ -10,16 +11,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/emprunt")
 public class EmpruntController {
     private final EmpruntProxy empruntProxy;
+    private final BorrowBookProxy borrowBookProxy;
 
     @Autowired
-    public EmpruntController(EmpruntProxy empruntProxy) {
+    public EmpruntController(EmpruntProxy empruntProxy, BorrowBookProxy borrowBookProxy) {
         this.empruntProxy = empruntProxy;
+        this.borrowBookProxy = borrowBookProxy;
     }
 
     // Endpoint to borrow a book
     @PostMapping("/borrow")
     public EmpruntAnswer borrowBook(@RequestParam int userId, @RequestParam int livreId) {
-        return empruntProxy.borrowBook(userId, livreId);
+        return borrowBookProxy.borrowBook(userId, livreId);  // Corrected
     }
 
     // Endpoint to accept a borrow request
