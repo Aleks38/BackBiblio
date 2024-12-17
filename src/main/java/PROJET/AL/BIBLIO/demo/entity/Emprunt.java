@@ -14,8 +14,8 @@ public class Emprunt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long utilisateurId;
-    private Long livreId;
+    private Integer utilisateurId;
+    private Integer livreId;
     private String dateEmprunt;
     private String dateRetour;
 

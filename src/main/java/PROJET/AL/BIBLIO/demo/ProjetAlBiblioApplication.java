@@ -19,13 +19,7 @@ public class ProjetAlBiblioApplication {
         ObserverMember observerMember = context.getBean(ObserverMember.class);
         Sujet sujet = context.getBean(Sujet.class);
 
-        AppInitializer appInitializer = new AppInitializer(sujet, observerMember, observerLibrarian);
 
-        try {
-            appInitializer.run();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }

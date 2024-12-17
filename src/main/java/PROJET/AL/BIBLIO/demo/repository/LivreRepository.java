@@ -11,6 +11,5 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/livres")
 @CrossOrigin(origins = "http://localhost:4200")
-public interface LivreRepository extends JpaRepository<Livre, Long> {
-    Optional<Livre> findById(Long id);
+public interface LivreRepository extends JpaRepository<Livre, Integer> {
 }

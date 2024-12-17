@@ -12,8 +12,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/emprunts")
 @CrossOrigin(origins = "http://localhost:4200")
-public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
-    Optional<Emprunt> findById(Long id);
+public interface EmpruntRepository extends JpaRepository<Emprunt, Integer> {
+    Optional<Emprunt> findById(Integer id);
 
-    List<Emprunt> findByUtilisateurId(Long utilisateurId);
 }
