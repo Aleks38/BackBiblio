@@ -14,11 +14,11 @@ public class LoginService {
     private UtilisateurRepository UtilisateurRepository;
 
     public LoginResponse verifyUser(String email, String password) {
-        Optional<Utilisateur> optionalUser = UtilisateurRepository.findByEmailAndAdresse(email, password);
+        Optional<Utilisateur> optionalUser = UtilisateurRepository.findByEmailAndMotDePasse(email, password);
 
         if (optionalUser.isPresent()) {
             Utilisateur user = optionalUser.get();
-            return new LoginResponse(user.getId(), "Connexion réussie");
+            return new LoginResponse(user, "Connexion réussie");
         } else {
             return new LoginResponse(null,  "Identifiants incorrects");
         }

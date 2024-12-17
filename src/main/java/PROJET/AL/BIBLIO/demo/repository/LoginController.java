@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/login")
-@CrossOrigin(origins = "*") // Autorise tous les domaines à appeler l'API
+@CrossOrigin(origins = "http://localhost:4200")
 public class LoginController {
 
     @Autowired
@@ -18,7 +18,7 @@ public class LoginController {
     public ResponseEntity<LoginResponse> loginUser(@RequestParam String email, @RequestParam String password) {
         LoginResponse response = loginService.verifyUser(email, password);
 
-        if (response.getId() != null) {
+        if (response.getUser() != null) {
             return ResponseEntity.ok(response); // 200 OK
         } else {
             return ResponseEntity.status(401).body(response); // 401 Unauthorized

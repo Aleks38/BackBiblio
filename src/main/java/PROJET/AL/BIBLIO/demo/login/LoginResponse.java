@@ -1,17 +1,19 @@
 package PROJET.AL.BIBLIO.demo.login;
 
+import PROJET.AL.BIBLIO.demo.entity.Utilisateur;
+
 public class LoginResponse {
-    private Integer id;
+    private Utilisateur user;
     private String message;
 
-    public LoginResponse(Integer id, String message) {
-        this.id = id;
+    public LoginResponse(Utilisateur user, String message) {
+        this.user = user;
         this.message = message;
     }
 
     // Getters et setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Utilisateur getUser() { return user; }
+    public void setUser(Utilisateur user ) { this.user = user; }
 
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
