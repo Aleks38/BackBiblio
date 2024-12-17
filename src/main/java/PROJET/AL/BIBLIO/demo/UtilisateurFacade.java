@@ -41,11 +41,12 @@ public class UtilisateurFacade {
         Emprunt emprunt = empruntRepository.findById(idEmprunt)
                 .orElseThrow(() -> new RuntimeException("Emprunt non trouvé"));
 
-        if (emprunt.getDateRetour() != null) {
+        Status status = emprunt.getStatus();
+        if (status.getId() == 2) {
             throw new RuntimeException("L'emprunt est déjà retourné, il ne peut pas être prolongé.");
         }
 
-        LocalDate nouvelleDateRetour = LocalDate.parse(emprunt.getDateEmprunt()).plusDays(joursSupplementaires);
+        LocalDate nouvelleDateRetour = LocalDate.parse(emprunt.getDateRetour()).plusDays(joursSupplementaires);
         emprunt.setDateRetour(String.valueOf(nouvelleDateRetour));
 
         empruntRepository.save(emprunt);
@@ -57,8 +58,9 @@ public class UtilisateurFacade {
         LocalDate aujourdHui = LocalDate.now();
 
         return empruntRepository.findAll().stream()
-                .filter(emprunt -> emprunt.getDateRetour() == null &&
-                        LocalDate.parse(emprunt.getDateEmprunt()).isBefore(aujourdHui))
+                .filter(emprunt ->
+                        LocalDate.parse(emprunt.getDateEmprunt()).isBefore(aujourdHui) &&
+                                (emprunt.getStatus() == null || emprunt.getStatus().getId() != 2))
                 .collect(Collectors.toList());
     }
 
@@ -66,7 +68,8 @@ public class UtilisateurFacade {
         Emprunt emprunt = empruntRepository.findById(idEmprunt)
                 .orElseThrow(() -> new RuntimeException("Emprunt non trouvé"));
 
-        if (emprunt.getDateRetour() != null) {
+        Status status = emprunt.getStatus();
+        if (status.getId() == 2) {
             throw new RuntimeException("Ce livre a déjà été retourné.");
         }
 
