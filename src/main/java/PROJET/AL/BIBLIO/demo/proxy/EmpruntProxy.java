@@ -28,7 +28,6 @@ public class EmpruntProxy {
     }
 
     public BorrowModel borrowBook(Long userId, Long livreId) {
-        // Fetch the user's role from the database
         Utilisateur user = userRepository.findById(userId).orElse(null);
         Livre livre = livreRepository.findById(livreId).orElse(null);
         Status statusWaiting = statusRepository.findByNom(EnumStatus.Waiting).orElse(null);
@@ -72,26 +71,49 @@ public class EmpruntProxy {
             throw new RuntimeException("Emprunt not found.");
         }
 
-        // Check if the Emprunt is pending
-        if (statusAccepted.equals(emprunt.getStatus())) {
-            throw new RuntimeException("Emprunt is not pending.");
+        // Fetch the Livre associated with the Emprunt
+        Livre livre = livreRepository.findById(emprunt.getLivreId()).orElse(null);
+
+        if (livre == null) {
+            throw new RuntimeException("Livre not found.");
         }
+
+        // Check if there are available copies of the book
+        if (livre.getExemplairesDisponibles() <= 0) {
+            throw new RuntimeException("No available copies of the book.");
+        }
+
+        // Decrement the number of available copies
+        livre.setExemplairesDisponibles(livre.getExemplairesDisponibles() - 1);
+        livreRepository.save(livre);
 
         // Update the Emprunt status to "accepted"
         emprunt.setStatus(statusAccepted);
-
         empruntRepository.save(emprunt);
 
         return emprunt;
     }
 
     public Boolean rejectBorrowRequest(Long empruntId) {
+        // Fetch the Emprunt from the database
         Emprunt emprunt = empruntRepository.findById(empruntId).orElse(null);
 
         if (emprunt == null) {
             throw new RuntimeException("Emprunt not found.");
         }
 
+        // Fetch the Livre associated with the Emprunt
+        Livre livre = livreRepository.findById(emprunt.getLivreId()).orElse(null);
+
+        if (livre == null) {
+            throw new RuntimeException("Livre not found.");
+        }
+
+        // Increment the number of available copies
+        livre.setExemplairesDisponibles(livre.getExemplairesDisponibles() + 1);
+        livreRepository.save(livre);
+
+        // Delete the Emprunt
         empruntRepository.delete(emprunt);
 
         return true;
