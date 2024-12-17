@@ -24,6 +24,7 @@ public abstract class Utilisateur {
     private String motDePasse;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", insertable = false, updatable = false) // role_id géré comme discriminant    private Role role;
+    @JoinColumn(name = "role_id", insertable = false, updatable = false)
+    private Role role;
     public abstract void afficherDetails();
 }
