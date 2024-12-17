@@ -1,5 +1,6 @@
 package PROJET.AL.BIBLIO.demo.proxy;
 
+import PROJET.AL.BIBLIO.demo.entity.Status;
 import PROJET.AL.BIBLIO.demo.entity.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,11 +46,15 @@ public class EmpruntProxy {
 
         // Create and save a new Emprunt
         Emprunt emprunt = new Emprunt();
+
         emprunt.setLivreId(livreId);
         emprunt.setUtilisateurId(userId);
         emprunt.setDateEmprunt(LocalDate.now().toString());
-        emprunt.setDateRetour(null);
+        emprunt.setDateRetour(LocalDate.now().plusDays(15).toString());
+        Status status = new Status();
+        status.setId(1);  // Set the ID to 1 directly
 
+        emprunt.setStatus(status);
         empruntRepository.save(emprunt);
 
         return new empruntAnswer(emprunt, "emprunt successfully.");
