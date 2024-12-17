@@ -4,14 +4,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@DiscriminatorValue("Bibliothecaire")
+@DiscriminatorValue("2")
+@Data
 public class Bibliothecaire extends Utilisateur {
     public Bibliothecaire() {
         super();
     }
 
-    public Bibliothecaire(String nom, String prenom, String email, String motDePasse, Role role) {
-        super(null, nom, prenom, email, motDePasse, role);
+    public Bibliothecaire(String nom, String prenom, String email, String motDePasse) {
+        super(null, nom, prenom, email, motDePasse);
     }
 
     @Override

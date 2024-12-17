@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/emprunt")
 public class EmpruntController {
     @Autowired
-    private final EmpruntProxy empruntProxy;
+    private  EmpruntProxy empruntProxy;
 
-    public EmpruntController(EmpruntProxy empruntProxy) {
-        this.empruntProxy = empruntProxy;
-    }
 
     @PostMapping("/borrow")
     public String borrowBook(@RequestParam int userId, @RequestParam int livreId) {

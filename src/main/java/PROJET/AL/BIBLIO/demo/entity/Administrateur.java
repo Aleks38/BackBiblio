@@ -8,14 +8,15 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("Administrateur")
+@DiscriminatorValue("3")
+@Data
 public class Administrateur extends Utilisateur {
     public Administrateur() {
         super();
     }
 
-    public Administrateur(String nom, String prenom, String email, String motDePasse, Role role) {
-        super(null, nom, prenom, email, motDePasse, role);
+    public Administrateur(String nom, String prenom, String email, String motDePasse) {
+        super(null, nom, prenom, email, motDePasse);
     }
 
     @Override

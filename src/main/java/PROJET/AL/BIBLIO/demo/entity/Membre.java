@@ -5,14 +5,14 @@ import lombok.*;
 
 @Entity
 @Data
-@DiscriminatorValue("Membre")
+@DiscriminatorValue("1") // Correspond au rôle "Membre"
 public class Membre extends Utilisateur {
     public Membre() {
         super();
     }
 
-    public Membre(String nom, String prenom, String email, String motDePasse, Role role) {
-        super(null, nom, prenom, email, motDePasse, role);
+    public Membre(String nom, String prenom, String email, String motDePasse) {
+        super(null, nom, prenom, email, motDePasse);
     }
 
     @Override
