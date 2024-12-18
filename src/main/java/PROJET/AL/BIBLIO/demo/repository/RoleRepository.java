@@ -11,6 +11,5 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/roles")
 @CrossOrigin(origins = "http://localhost:4200")
-public interface RoleRepository extends JpaRepository<Role, Long> {
-    Optional<Role> findByNom(String name);
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 }

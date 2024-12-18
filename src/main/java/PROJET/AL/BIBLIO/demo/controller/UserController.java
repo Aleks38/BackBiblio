@@ -15,6 +15,7 @@ import java.util.Map;
 @RequestMapping
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
+
     @Autowired
     UtilisateurRepository utilisateurRepository;
 
@@ -33,7 +34,6 @@ public class UserController {
             utilisateur = UtilisateurFactory.CreateUtilisateur(role, nom, prenom, email, motDePasse);
             utilisateur = utilisateurRepository.save(utilisateur);
 
-            // Construction de la réponse
             response.put("status", "success");
             response.put("message", "Utilisateur créé avec succès");
             response.put("utilisateur", utilisateur);

@@ -1,37 +1,39 @@
 package PROJET.AL.BIBLIO.demo.repository;
 
-import PROJET.AL.BIBLIO.demo.apiModel.BorrowModel;
-import PROJET.AL.BIBLIO.demo.entity.Emprunt;
+import PROJET.AL.BIBLIO.demo.proxy.BorrowBookProxy;
 import PROJET.AL.BIBLIO.demo.proxy.EmpruntProxy;
-import org.springframework.http.ResponseEntity;
+import PROJET.AL.BIBLIO.demo.proxy.EmpruntAnswer;
+import PROJET.AL.BIBLIO.demo.entity.Emprunt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/emprunt")
-@CrossOrigin(origins = "http://localhost:4200")
 public class EmpruntController {
-
     private final EmpruntProxy empruntProxy;
+    private final BorrowBookProxy borrowBookProxy;
 
-    public EmpruntController(EmpruntProxy empruntProxy) {
+    @Autowired
+    public EmpruntController(EmpruntProxy empruntProxy, BorrowBookProxy borrowBookProxy) {
         this.empruntProxy = empruntProxy;
+        this.borrowBookProxy = borrowBookProxy;
     }
 
+    // Endpoint to borrow a book
     @PostMapping("/borrow")
-    public ResponseEntity<BorrowModel> borrowBook(@RequestParam Long userId, @RequestParam Long livreId) {
-        BorrowModel newBorrowModel = empruntProxy.borrowBook(userId, livreId);
-        return ResponseEntity.ok(newBorrowModel);
+    public EmpruntAnswer borrowBook(@RequestParam int userId, @RequestParam int livreId) {
+        return borrowBookProxy.borrowBook(userId, livreId);  // Corrected
     }
 
+    // Endpoint to accept a borrow request
     @PostMapping("/accept")
-    public ResponseEntity<Emprunt> acceptBorrowRequest(@RequestParam Long empruntId) {
-        Emprunt acceptBorrowRequest = empruntProxy.acceptBorrowRequest(empruntId);
-        return ResponseEntity.ok(acceptBorrowRequest);
+    public Emprunt acceptBorrowRequest(@RequestParam Integer empruntId) {
+        return empruntProxy.acceptBorrowRequest(empruntId);
     }
 
+    // Endpoint to reject a borrow request
     @PostMapping("/reject")
-    public ResponseEntity<Boolean> rejectBorrowRequest(@RequestParam Long empruntId) {
-        Boolean rejectBorrowRequest = empruntProxy.rejectBorrowRequest(empruntId);
-        return ResponseEntity.ok(rejectBorrowRequest);
+    public Boolean rejectBorrowRequest(@RequestParam Integer empruntId) {
+        return empruntProxy.rejectBorrowRequest(empruntId);
     }
 }

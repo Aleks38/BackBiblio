@@ -1,6 +1,5 @@
 package PROJET.AL.BIBLIO.demo.proxy;
 
-import PROJET.AL.BIBLIO.demo.apiModel.BorrowModel;
 import PROJET.AL.BIBLIO.demo.entity.*;
 import PROJET.AL.BIBLIO.demo.repository.EmpruntRepository;
 import PROJET.AL.BIBLIO.demo.repository.LivreRepository;
@@ -10,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmpruntProxy {
@@ -26,46 +25,33 @@ public class EmpruntProxy {
         this.livreRepository = livreRepository;
         this.statusRepository = statusRepository;
     }
+/*
+    public EmpruntAnswer borrowBook(int userId, int livreId) {
+        Utilisateur userOptional = userRepository.findById(userId).orElse(null);
 
-    public BorrowModel borrowBook(Long userId, Long livreId) {
-        Utilisateur user = userRepository.findById(userId).orElse(null);
-        Livre livre = livreRepository.findById(livreId).orElse(null);
-        Status statusWaiting = statusRepository.findByNom(EnumStatus.Waiting).orElse(null);
 
-        if (user == null) {
-            throw new RuntimeException("User not found.");
+        if (!(userOptional instanceof Membre)) {
+            return new EmpruntAnswer(null, "Access denied: Only Membres can borrow books.");
         }
 
-        // Check if the user is a "Membre"
-        if (!UserType.Utilisateur.equals(user.getRole().getNom())) {
-            throw new RuntimeException("User is not a member.");
-        }
-
-        // Create and save a new Emprunt
         Emprunt emprunt = new Emprunt();
-        emprunt.setUtilisateurId(userId);
-        emprunt.setLivreId(livreId);
-        emprunt.setDateEmprunt(LocalDate.now().toString());
-        emprunt.setDateRetour(null);
-        emprunt.setStatus(statusWaiting);
 
+        emprunt.setLivreId(livreId);
+        emprunt.setUtilisateurId(userId);
+        emprunt.setDateEmprunt(LocalDate.now().toString());
+        emprunt.setDateRetour(LocalDate.now().plusDays(15).toString());
+        Status status = new Status();
+        status.setId(1);  // Set the ID to 1 directly
+        emprunt.setStatus(status);
         empruntRepository.save(emprunt);
 
-        BorrowModel borrowModel = new BorrowModel();
-        borrowModel.setUserId(userId);
-        borrowModel.setUserName(user.getNom());
-        borrowModel.setUserSurname(user.getPrenom());
-        borrowModel.setLivreId(livreId);
-        borrowModel.setLivreTitle(livre.getTitre());
-        borrowModel.setStatus(emprunt.getStatus());
+        return new EmpruntAnswer(emprunt, "emprunt successfully.");
 
-        return borrowModel;
-    }
-
-    public Emprunt acceptBorrowRequest(Long empruntId) {
+    }*/
+    public Emprunt acceptBorrowRequest(Integer empruntId) {
         // Fetch the Emprunt from the database
         Emprunt emprunt = empruntRepository.findById(empruntId).orElse(null);
-        Status statusAccepted = statusRepository.findByNom(EnumStatus.Accepted).orElse(null);
+        Status statusAccepted = (Status) statusRepository.findByNom(EnumStatus.Accepted).orElse(null);
 
         if (emprunt == null) {
             throw new RuntimeException("Emprunt not found.");
@@ -94,7 +80,7 @@ public class EmpruntProxy {
         return emprunt;
     }
 
-    public Boolean rejectBorrowRequest(Long empruntId) {
+    public Boolean rejectBorrowRequest(Integer empruntId) {
         // Fetch the Emprunt from the database
         Emprunt emprunt = empruntRepository.findById(empruntId).orElse(null);
 
@@ -119,8 +105,8 @@ public class EmpruntProxy {
         return true;
     }
 
-    public List<Emprunt> getEmpruntsByUserId(Long userId) {
-        return empruntRepository.findByUtilisateurId(userId);
+    public Optional<Emprunt> getEmpruntsByUserId(Integer userId) {
+        return empruntRepository.findById(userId);
     }
 
 }
