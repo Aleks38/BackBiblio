@@ -36,4 +36,10 @@ public class EmpruntController {
     public Boolean rejectBorrowRequest(@RequestParam Integer empruntId) {
         return empruntProxy.rejectBorrowRequest(empruntId);
     }
+
+    // Endpoint to return a borrowed book
+    @PostMapping("/return")
+    public Emprunt returnBorrowedBook(@RequestParam Integer empruntId) {
+        return empruntProxy.returnBorrowedBook(empruntId);
+    }
 }

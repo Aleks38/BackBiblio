@@ -109,4 +109,18 @@ public class EmpruntProxy {
         return empruntRepository.findById(userId);
     }
 
+    public Emprunt returnBorrowedBook(Integer empruntId) {
+        Emprunt emprunt = empruntRepository.findById(empruntId).orElse(null);
+
+        if (emprunt == null) {
+            throw new RuntimeException("Emprunt not found.");
+        }
+
+        // Set the return date to now
+        emprunt.setDateRetour(LocalDate.now().toString());
+        empruntRepository.save(emprunt);
+
+        return emprunt;
+    }
+
 }
