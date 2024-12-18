@@ -32,7 +32,7 @@ public class LivreService {
                 .orElseThrow(() -> new RuntimeException("Emprunt non trouvé"));
 
         Status status = emprunt.getStatus();
-        if (status.getId() == 2) {
+        if (status.getId() == 3) {
             throw new RuntimeException("Ce livre a déjà été retourné.");
         }
         emprunt.setDateRetour(String.valueOf(LocalDate.now()));

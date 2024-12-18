@@ -24,7 +24,7 @@ public class EmpruntService {
         return empruntRepository.findAll().stream()
                 .filter(emprunt ->
                         LocalDate.parse(emprunt.getDateEmprunt()).isBefore(aujourdHui) &&
-                                (emprunt.getStatus() == null || emprunt.getStatus().getId() != 2))
+                                (emprunt.getStatus() == null || emprunt.getStatus().getId() != 3))
                 .collect(Collectors.toList());
     }
 
@@ -33,7 +33,7 @@ public class EmpruntService {
                 .orElseThrow(() -> new RuntimeException("Emprunt non trouvé"));
 
         Status status = emprunt.getStatus();
-        if (status.getId() == 2) {
+        if (status.getId() == 3) {
             throw new RuntimeException("L'emprunt est déjà retourné, il ne peut pas être prolongé.");
         }
 
