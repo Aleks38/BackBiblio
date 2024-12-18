@@ -27,7 +27,6 @@ public class BorrowBookService implements IBorrowBookService  {
         emprunt.setLivreId(livreId);
         emprunt.setUtilisateurId(userId);
         emprunt.setDateEmprunt(LocalDate.now().toString());
-        emprunt.setDateRetour(LocalDate.now().plusDays(15).toString());
 
         Status status = new Status();
         status.setId(1);  // Set the ID for status
