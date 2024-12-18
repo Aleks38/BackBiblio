@@ -12,6 +12,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/status")
 @CrossOrigin(origins = "http://localhost:4200")
-public interface StatusRepository extends JpaRepository<Status, Long> {
+public interface StatusRepository extends JpaRepository<Status, Integer> {
     Optional<Object> findByNom(EnumStatus enumStatus);
 }

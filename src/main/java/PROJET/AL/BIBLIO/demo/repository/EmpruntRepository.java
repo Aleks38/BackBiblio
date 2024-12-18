@@ -14,5 +14,6 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 public interface EmpruntRepository extends JpaRepository<Emprunt, Integer> {
     Optional<Emprunt> findById(Integer id);
+    List<Emprunt> findByUtilisateurId(Integer utilisateurId);
 
 }
