@@ -27,9 +27,22 @@ public class BibliothequeControllerFacade {
     private UtilisateurService utilisateurService;
 
     @PostMapping("/createUser")
-    public ResponseEntity<Map<String, Object>> createUtilisateur(@RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<Map<String, Object>> createUtilisateur(
+            @RequestParam String role,
+            @RequestParam String nom,
+            @RequestParam String prenom,
+            @RequestParam String email,
+            @RequestParam String motDePasse) {
         try {
+            Map<String, String> requestBody = new HashMap<>();
+            requestBody.put("role", role);
+            requestBody.put("nom", nom);
+            requestBody.put("prenom", prenom);
+            requestBody.put("email", email);
+            requestBody.put("motDePasse", motDePasse);
+
             Map<String, Object> response = utilisateurService.createUtilisateur(requestBody);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (IllegalArgumentException e) {
             Map<String, Object> errorResponse = new HashMap<>();
@@ -38,6 +51,7 @@ public class BibliothequeControllerFacade {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
+
 
 
     @PostMapping("/emprunts/{id}/prolonger")
